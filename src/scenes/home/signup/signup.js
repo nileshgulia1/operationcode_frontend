@@ -23,6 +23,7 @@ class SignUp extends Component {
       emailValid: true,
       error: false,
       isValid: true,
+      isLoading: false,
       mentor: false,
       password: '',
       passwordConfirm: '',
@@ -65,7 +66,10 @@ class SignUp extends Component {
     value === '' || value === this.state.password;
 
   handleOnClick = (e) => {
-    e.preventDefault = true;
+    e.preventDefault();
+
+    this.setState({ isLoading: true });
+
     if (this.isFormValid()) {
       const { email, zip, password, firstName, lastName, mentor } = this.state;
       axios.post(`${config.backendUrl}/users`, {
@@ -78,7 +82,7 @@ class SignUp extends Component {
           mentor
         }
       }).then(() => {
-        this.setState({ success: true, error: null });
+        this.setState({ success: true, error: null, isLoading: false });
       }).catch((error) => {
         const data = _.get(error, 'response.data');
         let errorMessage = '';
@@ -89,8 +93,10 @@ class SignUp extends Component {
             }
           });
         }
-        this.setState({ error: errorMessage });
+        this.setState({ error: errorMessage, isLoading: false });
       });
+    } else {
+      this.setState({ error: 'Missing required field(s)', isLoading: false });
     }
   }
 
@@ -120,16 +126,21 @@ class SignUp extends Component {
           <FormInput id="firstName" placeholder="First Name" onChange={this.onFirstNameChange} />
           <FormInput id="lastName" placeholder="Last Name" onChange={this.onLastNameChange} />
           <FormZipCode id="zip" placeholder="Zip Code" onChange={this.onZipChange} />
-          <FormPassword id="password" placeholder="Password" onChange={this.onPasswordChange} />
+          <FormPassword
+            id="password" placeholder="Password"
+            onChange={this.onPasswordChange} validationRegex={/^(?=.*[A-Z]).{6,}$/}
+            validationErrorMessage="Must be 6 characters long and include a capitalized letter"
+          />
           <FormPassword
             id="passwordConfirm" placeholder="Confirm Password"
             onChange={this.onConfirmPasswordChange} validateFunc={this.validatePasswordConfirm}
+            validationErrorMessage="Passwords must match"
           />
           {this.state.error ? <ul className={styles.errorList}>There was an error joining Operation Code:
             <li className={styles.errorMessage}>{this.state.error}</li>
           </ul> : null }
           {this.state.success && <Redirect to="/thanks" />}
-          <FormButton className={styles.joinButton} text="Join" onClick={this.handleOnClick} theme="red" />
+          {this.state.isLoading ? <FormButton className={styles.joinButton} text="Loading..." disabled theme="grey" /> : <FormButton className={styles.joinButton} text="Join" onClick={this.handleOnClick} theme="red" />}
         </Form>
       </Section>
     );

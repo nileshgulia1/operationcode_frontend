@@ -52,31 +52,34 @@ class OnlineSchools extends Component {
       )
     );
     return (
-      <Section
-        id="onlineSchools"
-        title="Online Schools"
-        headingLines={false}
-        margin
-      >
-        <div className={styles.intro}>
-          <p className={styles.leadingParagraph}>
+      <div>
+        <Section
+          id="onlineSchools"
+          title="Online Schools"
+          headingLines={false}
+        >
+          <p>
             Many programs offer coding schools in a completely digital fashion. <br />Regardless of where
             you are in the world, you can learn how to code through these programs!
           </p>
-        </div>
 
-        <div className={styles.eSchools}>
-          {eSchools}
-        </div>
+          <div className={styles.eSchools}>
+            {eSchools}
+          </div>
+        </Section>
 
-        <div className={styles.moocs}>
-          <h3>MOOCs</h3>
-          <p className={styles.leadingParagraph}>
+        <Section
+          id="moocSchools"
+          title="MOOCs"
+          headingLines={false}
+        >
+          <p>
             Massive, Open, Online Courses (or MOOCs) are course study programs made available over
             the internet!
             <br />
             Typically there are start and end dates, but the work itself is done at your own pace.
-            <br />MOOCs are usually free, but there are certain benefits to paying for premium aspects
+            <br />
+            MOOCs are usually free, but there are certain benefits to paying for premium aspects
             of MOOCs.
             <br />
           </p>
@@ -95,18 +98,17 @@ class OnlineSchools extends Component {
               cardText={'Offers only paid programs, but we have licenses available.'}
               buttonText={'Website'}
               link={'https://teamtreehouse.com/'}
-              className={styles.boxShadow}
             />
             <ImageCard
               image={udacityLogo}
               title={'Udacity'}
               cardText={'Offers free courses with the option to pay for certificates/grading.'}
               buttonText={'Website'}
-              link={'https://udacity.org/'}
+              link={'https://udacity.com/'}
             />
           </div>
-        </div>
-      </Section>
+        </Section>
+      </div>
     );
   }
 }

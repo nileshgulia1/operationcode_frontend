@@ -5,7 +5,7 @@
   user-select: none;
   color: #ddd;
   padding: 10px;
-    font-size: 14px;
+  font-size: 14px;
   font-weight: 400;
   line-height: 1.42857143;
   border: 1px solid transparent;
@@ -21,8 +21,26 @@
   color: #FFF;
 }
 
+.red-large {
+  background-color: #D1665A;
+  border-color: #D1665A;
+  color: #FFF;
+  font-size: 1.5rem;
+  padding: 20px 40px;
+}
+
+.red:hover {
+  background-color: #F1665A;
+  border-color: #F1665A;
+}
+
 .blue {
   background-color: #249CBC;
   border-color:#249CBC;
   color: #fff;
+}
+
+.blue:hover {
+  background-color: #249CDE;
+  border-color: #249CDE;
 }

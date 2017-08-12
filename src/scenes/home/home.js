@@ -7,6 +7,7 @@ import classNames from 'classnames';
 import * as CookieHelpers from 'shared/utils/cookieHelper';
 import Login from 'shared/components/login/login';
 import IdmeVerify from 'shared/components/idme/idmeverify/idmeverify';
+import AuthenticatedRoute from 'shared/components/authenticatedRoute/authenticatedRoute';
 import familyImage from 'images/Family-2.jpg';
 import Profile from './profile/profile';
 import SignUp from './signup/signup';
@@ -18,8 +19,9 @@ import Thanks from './thanks/thanks';
 import Team from './team/team';
 import Gala from './gala/gala';
 import FAQ from './faq/faq';
+import Contact from './contact/contact';
+import History from './history/history';
 import FinancialStatements from './about/financialStatements/financialStatements';
-import styles from './home.css';
 import Header from './header/header';
 import Landing from './landing/landing';
 import Footer from './footer/footer';
@@ -27,6 +29,11 @@ import FourOhFour from './404/fourOhFour';
 import MentorRequest from './mentorRequest/mentorRequest';
 import SquadsNew from './squads/squadsNew/squadsNew';
 import CodeSchools from './codeSchools/codeSchools';
+import About from './about/about';
+import Press from './press/press';
+import ResetPassword from './resetPassword/resetPassword';
+import Challenge from './challenge/challenge';
+import styles from './home.css';
 
 class Home extends Component {
   constructor(props) {
@@ -119,6 +126,10 @@ class Home extends Component {
               component={SignUp}
             />
             <Route
+              path="/history"
+              component={History}
+            />
+            <Route
               path="/sign-up"
               component={SignUp}
             />
@@ -133,6 +144,31 @@ class Home extends Component {
             <Route
               path="/faq"
               component={FAQ}
+            />
+            <Route
+              path="/contact"
+              component={Contact}
+            />
+            <Route
+              exact
+              path="/about/financial-statements"
+              component={FinancialStatements}
+            />
+            <Route
+              path="/about"
+              component={About}
+            />
+            <Route
+              path="/press"
+              component={Press}
+            />
+            <Route
+              path="/media"
+              component={Press}
+            />
+            <Route
+              path="/challenge"
+              component={Challenge}
             />
             <Route
               exact
@@ -178,24 +214,28 @@ class Home extends Component {
               )}
             />
             <Route
+              path="/newgibill"
+              component={() => (window.location = 'http://www.benefits.va.gov/gibill/post911_gibill.asp')}
+            />
+            <Route
               path="/login"
               render={() => (
-                <Login updateRootAuthState={this.updateRootAuthState} {...authProps} />
+                <Login updateRootAuthState={this.updateRootAuthState} isLoggedIn={this.state.signedIn} {...authProps} />
               )}
             />
-            <Route
+            <AuthenticatedRoute
               exact path="/profile"
-              render={() => (
-                <Profile {...authProps} />
-              )}
+              isLoggedIn={CookieHelpers.getUserStatus().signedIn}
+              component={() => (<Profile {...authProps} />)}
             />
-            <Route
+            <AuthenticatedRoute
               exact path="/profile/verify"
-              render={() => (
-                <IdmeVerify updateRootAuthState={this.updateRootAuthState} {...authProps} />
-              )}
+              isLoggedIn={CookieHelpers.getUserStatus().signedIn}
+              component={IdmeVerify}
+              updateRootAuthState={this.updateRootAuthState}
+              {...authProps}
             />
-            <Route exact path="/about/financial-statements" component={FinancialStatements} />
+            <Route exact path="/reset_password" component={ResetPassword} />
             <Route
               path="*" component={FourOhFour}
             />

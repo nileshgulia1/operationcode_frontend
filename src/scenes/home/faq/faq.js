@@ -13,6 +13,7 @@ class FAQ extends Component {
           <Question
             q={question.question}
             a={question.answer}
+            key={Math.random + question.question}
           />
         )
     );
@@ -22,6 +23,7 @@ class FAQ extends Component {
           <Question
             q={question.question}
             a={question.answer}
+            key={Math.random + question.question}
           />
         )
     );
@@ -31,45 +33,45 @@ class FAQ extends Component {
           <Question
             q={question.question}
             a={question.answer}
+            key={Math.random + question.question}
           />
         )
     );
 
     return (
-      <div>
-        <Section title="Frequently Asked Questions" theme="white">
-          <span id="top" className={styles.headline}>General Questions</span>
+      <Section title="General Questions" theme="white">
+        <Section theme="white" headingLines={false}>
           <div className={styles.container}>
-            <div className={styles.accordion}>
-              {generalQuestions}
-            </div>
+            {generalQuestions}
           </div>
+          <br />
           <LinkButton
             link="top"
             text="Scroll to Top"
             theme="blue"
             scrollLink
           />
-          <span className={styles.headline}>Donation Questions</span>
+        </Section>
+        <Section title="Donation Questions" theme="white">
+          <br />
           <div className={styles.container}>
-            <div className={styles.accordion}>
-              {donationQuestions}
-            </div>
+            {donationQuestions}
           </div>
+          <br />
           <LinkButton
             link="top"
             text="Scroll to Top"
             theme="blue"
             scrollLink
           />
-          <span className={styles.headline}>Volunteer Questions</span>
+        </Section>
+        <Section title="Volunteer Questions" theme="white">
+          <br />
           <div className={styles.container}>
-            <div className={styles.accordion}>
-              {volunteerQuestions}
-            </div>
+            {volunteerQuestions}
           </div>
         </Section>
-      </div>
+      </Section>
     );
   }
 }

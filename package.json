@@ -9,6 +9,7 @@
     "express": "^4.15.2",
     "font-awesome": "^4.7.0",
     "history": "^4.6.1",
+    "jwt-decode": "^2.2.0",
     "lodash": "^4.17.4",
     "postscribe": "^2.0.8",
     "prop-types": "^15.5.8",
@@ -16,8 +17,8 @@
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "react-error-overlay": "^1.0.7",
-    "react-fontawesome": "^1.6.1",
     "react-ga": "^2.2.0",
+    "react-icons": "^2.2.5",
     "react-modal": "^1.7.7",
     "react-router": "^4.1.1",
     "react-router-dom": "^4.1.1",
@@ -71,12 +72,12 @@
   "scripts": {
     "start": "node scripts/start.js",
     "start:server": "node server",
-    "start:docker": "node scripts/build.js && node server",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom",
     "lint": "eslint src",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "backend": "./bin/run_backend.sh"
   },
   "jest": {
     "moduleDirectories": [
