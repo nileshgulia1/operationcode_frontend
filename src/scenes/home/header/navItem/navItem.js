@@ -4,25 +4,27 @@ import PropTypes from 'prop-types';
 import styles from './navItem.css';
 
 class NavItem extends PureComponent {
-
   constructor() {
     super();
     this.handleClick = this.handleClick.bind(this);
   }
 
   handleClick() {
-    if (this.props.isExternal) {
-      window.location(this.props.to);
-    }
-
     if (this.props.onClick) {
       this.props.onClick();
     }
   }
 
   render() {
-    const disabledClass = this.props.notClickable ? styles.disabledNavItem : '';
-    const classes = `${styles.navItem} ${disabledClass} ${styles[this.props.className]}`;
+    const classes = `${styles.navItem} ${styles[this.props.className]}`;
+    if (this.props.isExternal) {
+      return (
+        <a className={classes} href={this.props.to} target="_blank" rel="noopener noreferrer">
+          {this.props.text}
+        </a>
+      );
+    }
+
     return (
       <Link className={classes} to={this.props.to} onClick={this.handleClick}>
         {this.props.text}
@@ -34,20 +36,16 @@ class NavItem extends PureComponent {
 NavItem.propTypes = {
   className: PropTypes.string,
   isExternal: PropTypes.bool,
-  notClickable: PropTypes.bool,
   onClick: PropTypes.func,
-  to: PropTypes.string.isRequired,
+  to: PropTypes.string,
   text: PropTypes.string.isRequired
 };
 
 NavItem.defaultProps = {
   className: null,
   isExternal: false,
-  notClickable: false,
-  onClick: null
+  onClick: null,
+  to: ''
 };
-
-// TODO: When all routes complete, remove all references to notClickable and disabledClass (js/css)
-// NOTE: For the usage of disabledClass within the classes const, ask jjhampton if there are issues
 
 export default NavItem;

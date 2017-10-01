@@ -21,6 +21,11 @@ export function postBackend(path, body) {
   return axios.post(`${config.backendUrl}/${path}`, body, { headers: authHeader });
 }
 
+export function patchBackend(path, body) {
+  const authHeader = setAuthorizationHeader();
+  return axios.patch(`${config.backendUrl}/${path}`, body, { headers: authHeader });
+}
+
 export function joinSquad(id) {
   const authHeader = setAuthorizationHeader();
   return axios.post(`${config.backendUrl}/squads/${id}/join`, {
@@ -40,6 +45,9 @@ export const getMentor = id => makeGenericGet(`mentors/${id}`);
 export const getRequests = () => makeGenericGet('requests');
 
 export const getSquads = () => makeGenericGet('squads');
+
+export const getScholarships = () => makeGenericGet('scholarships');
+export const getScholarship = id => makeGenericGet(`scholarships/${id}`);
 
 export function postRequest({ language, additionalDetails, mentor, service }) {
   const authHeader = setAuthorizationHeader();
