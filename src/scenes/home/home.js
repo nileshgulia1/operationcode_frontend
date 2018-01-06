@@ -9,6 +9,8 @@ import Login from 'shared/components/login/login';
 import IdmeVerify from 'shared/components/idme/idmeverify/idmeverify';
 import AuthenticatedRoute from 'shared/components/authenticatedRoute/authenticatedRoute';
 import familyImage from 'images/Family-2.jpg';
+import lincolnImage from 'images/lincoln.jpg';
+import colinPowellImage from 'images/colin-powell.jpg';
 import Profile from './profile/profile';
 import SignUp from './signup/signup';
 import Scholarships from './scholarship/scholarships';
@@ -24,6 +26,7 @@ import Landing from './landing/landing';
 import Footer from './footer/footer';
 import FourOhFour from './404/fourOhFour';
 import MentorRequest from './mentorRequest/mentorRequest';
+import LeadershipCircle from './leadershipCircle/leadershipCircle';
 import CodeSchools from './codeSchools/codeSchools';
 import About from './about/about';
 import Press from './press/press';
@@ -31,6 +34,7 @@ import ResetPassword from './resetPassword/resetPassword';
 import Challenge from './challenge/challenge';
 import SignupInformation from './informationForm/informationForm';
 import Benefit from './benefit/benefit';
+import Terms from './termsOfService/termsOfService';
 import styles from './home.css';
 
 const ReactToastr = require('react-toastr');
@@ -42,12 +46,13 @@ class Home extends Component {
   state = {
     bgImage: false,
     bgImageUrl: null,
+    bgImageStyle: null,
     signedIn: false,
-    mentor: false
-  }
+    mentor: false,
+  };
 
   componentWillMount() {
-    this.props.history.listen((location) => {
+    this.props.history.listen(location => {
       this.setBgImage(location);
     });
     this.setBgImage(this.props.location);
@@ -57,50 +62,66 @@ class Home extends Component {
   setBgImage(location) {
     if (location.pathname === '/') {
       this.setState({
-        bgChanged: !(this.state.bgImage),
+        bgChanged: !this.state.bgImage,
         bgImage: true,
         bgImageUrl: familyImage,
+        bgImageStyle: 'backgroundImageHome',
+      });
+    } else if (location.pathname === '/team') {
+      this.setState({
+        bgChanged: !this.state.bgImage,
+        bgImage: true,
+        bgImageUrl: lincolnImage,
+        bgImageStyle: 'backgroundImageTeam',
+      });
+    } else if (location.pathname === '/history') {
+      this.setState({
+        bgChanged: !this.state.bgImage,
+        bgImage: true,
+        bgImageUrl: colinPowellImage,
+        bgImageStyle: 'backgroundImageTeam',
       });
     } else {
-      this.setState(
-        { bgChanged: this.state.bgImage, bgImage: false, bgImageUrl: null });
+      this.setState({
+        bgChanged: this.state.bgImage,
+        bgImage: false,
+        bgImageUrl: null,
+        bgImageStyle: null,
+      });
     }
   }
 
-  updateRootAuthState = (cb) => {
+  updateRootAuthState = () => {
     const cookies = CookieHelpers.getUserStatus();
-    this.setState({
-      signedIn: cookies.signedIn,
-      mentor: cookies.mentor,
-      verified: cookies.verified,
-    }, () => {
-      if (cb) {
-        cb(this.props.history);
+    this.setState(
+      {
+        signedIn: cookies.signedIn,
+        mentor: cookies.mentor,
+        verified: cookies.verified,
       }
-    });
-  }
+    );
+  };
 
   logOut = () => {
     CookieHelpers.clearAuthCookies();
-    this.setState({
-      signedIn: false,
-      mentor: false,
-      verified: false,
-    }, () => {
-      this.props.history.push('/');
-    });
-  }
+    this.setState(
+      {
+        signedIn: false,
+        mentor: false,
+        verified: false,
+      },
+      () => {
+        this.props.history.push('/');
+      }
+    );
+  };
 
   sendNotification = (type, title, subtitle) => {
-    this.container[type](
-      subtitle,
-      title,
-      {
-        timeOut: 3000,
-        extendedTimeOut: 3000,
-      },
-    );
-  }
+    this.container[type](subtitle, title, {
+      timeOut: 3000,
+      extendedTimeOut: 3000,
+    });
+  };
 
   render() {
     const { mentor, signedIn, verified } = this.state;
@@ -112,35 +133,30 @@ class Home extends Component {
 
     const classes = classNames({
       [`${styles.home}`]: true,
-      [`${styles.backgroundImage}`]: this.state.bgImage,
+      [`${styles[this.state.bgImageStyle]}`]: this.state.bgImage,
     });
     return (
       <div
         className={classes}
-        style={(this.state.bgImage)
-          ? { backgroundImage: `url(${this.state.bgImageUrl})` }
-          : {}}
+        style={this.state.bgImage ? { backgroundImage: `url(${this.state.bgImageUrl})` } : {}}
       >
         <Header
-          transparent={this.state.bgImage} logOut={this.logOut}
-          signedIn={signedIn} mentor={mentor}
+          transparent={this.state.bgImage}
+          logOut={this.logOut}
+          signedIn={signedIn}
+          mentor={mentor}
         />
         <div className={styles.main}>
           <Switch>
-            <Route
-              path="/code-schools"
-              component={CodeSchools}
-            />
-            <Route
-              path="/code_schools"
-              component={CodeSchools}
-            />
+            <Route path="/code-schools" component={CodeSchools} />
+            <Route path="/code_schools" component={CodeSchools} />
             <Route
               path="/signup"
               render={() => (
                 <SignUp
                   updateRootAuthState={this.updateRootAuthState}
-                  isLoggedIn={this.state.signedIn} {...authProps}
+                  isLoggedIn={this.state.signedIn}
+                  {...authProps}
                   sendNotification={this.sendNotification}
                 />
               )}
@@ -150,7 +166,8 @@ class Home extends Component {
               render={() => (
                 <SignUp
                   updateRootAuthState={this.updateRootAuthState}
-                  isLoggedIn={this.state.signedIn} {...authProps}
+                  isLoggedIn={this.state.signedIn}
+                  {...authProps}
                   sendNotification={this.sendNotification}
                 />
               )}
@@ -205,10 +222,18 @@ class Home extends Component {
               component={Challenge}
             />
             <Route
+              path="/terms"
+              component={Terms}
+            />
+            <Route
+              path="/leadership_circle"
+              component={LeadershipCircle}
+            />
+            <Route
               exact
               path="/"
               render={props => (
-                <Landing {...props} />
+                <Landing {...props} sendNotification={this.sendNotification} />
               )}
             />
             <Route
@@ -237,7 +262,8 @@ class Home extends Component {
             {/* eslint-disable */}
             <Route
               path="/newgibill"
-              component={() => window.location = 'http://www.benefits.va.gov/gibill/post911_gibill.asp'}
+              component={() =>
+                (window.location = 'http://www.benefits.va.gov/gibill/post911_gibill.asp')}
             />
             {/* eslint-enable */}
             <Route
@@ -245,36 +271,41 @@ class Home extends Component {
               render={() => (
                 <Login
                   updateRootAuthState={this.updateRootAuthState}
-                  isLoggedIn={this.state.signedIn}{...authProps}
+                  isLoggedIn={this.state.signedIn}
+                  {...authProps}
                   sendNotification={this.sendNotification}
+                  history={this.props.history}
                 />
               )}
             />
             <AuthenticatedRoute
-              exact path="/scholarships/:id/apply"
+              exact
+              path="/scholarships/:id/apply"
               isLoggedIn={CookieHelpers.getUserStatus().signedIn}
               component={ScholarshipApplication}
             />
             <AuthenticatedRoute
-              exact path="/profile"
+              exact
+              path="/profile"
               isLoggedIn={CookieHelpers.getUserStatus().signedIn}
-              component={() => (<Profile {...authProps} />)}
+              component={() => <Profile {...authProps} />}
             />
             <AuthenticatedRoute
-              exact path="/profile/verify"
+              exact
+              path="/profile/verify"
               isLoggedIn={CookieHelpers.getUserStatus().signedIn}
               component={IdmeVerify}
               updateRootAuthState={this.updateRootAuthState}
               {...authProps}
             />
             <Route exact path="/reset_password" component={ResetPassword} />
-            <Route
-              path="*" component={FourOhFour}
-            />
+            <Route path="*" component={FourOhFour} />
           </Switch>
         </div>
         <ToastContainer
-          ref={(input) => { this.container = input; }}
+          ref={input => {
+            this.container = input;
+          }}
           toastMessageFactory={ToastMessageFactory}
           className="toast-top-right"
         />
@@ -285,8 +316,30 @@ class Home extends Component {
 }
 
 Home.propTypes = {
-  history: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired,
+  history: PropTypes.shape({
+    action: PropTypes.string,
+    block: PropTypes.func,
+    createHref: PropTypes.func,
+    go: PropTypes.func,
+    goBack: PropTypes.func,
+    goForward: PropTypes.func,
+    length: PropTypes.number,
+    listen: PropTypes.func,
+    location: PropTypes.shape({
+      key: PropTypes.string,
+      pathname: PropTypes.string,
+      search: PropTypes.string,
+    }),
+    push: PropTypes.func,
+    replace: PropTypes.func,
+  }).isRequired,
+
+  location: PropTypes.shape({
+    hash: PropTypes.string,
+    key: PropTypes.string,
+    pathname: PropTypes.string,
+    search: PropTypes.string,
+  }).isRequired,
 };
 
 export default withRouter(Home);

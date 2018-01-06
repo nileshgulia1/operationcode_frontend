@@ -26,6 +26,7 @@ This is OperationCode.org's repository for their new front-end implementation us
     - [Scenes / Component Structure](#scenes--component-structure)
       - [Components](#components)
       - [Styles](#styles)
+      - [Adding Code School Logo](#code-school-images)
     - [Running the development Server](#running-the-development-environment)
   - [Production Builds](#production-builds)
     - [Static Site](#static-site)
@@ -66,7 +67,7 @@ Run `git remote -v` to check if both the repositories are listed.
 6. Run `yarn install`
 
 #### Addressing An Issue
-Everytime you want to resolve an issue, you'll need to create a branch, code there, and then submit a pull request (PR) for review. Assuming you're already in the /operationcode_frontend directory...
+Every time you want to resolve an issue, you'll need to create a branch, code there, and then submit a pull request (PR) for review. Assuming you're already in the /operationcode_frontend directory...
 1. Run `git checkout -b "Name-of-branch-relevant-to-issue"`
 2. Run `yarn start` and now your development environment will load. Happy coding!
 
